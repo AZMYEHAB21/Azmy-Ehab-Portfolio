@@ -1,130 +1,183 @@
-# Azmy Ehab — Official Portfolio
+<div align="center">
 
-**Official website:** <https://azmyehab.cc/>  
-**GitHub profile:** <https://github.com/AZMYEHAB21>  
-**Target repository:** <https://github.com/AZMYEHAB21/Azmy-Ehab-Portfolio>
+# Azmy Ehab — Professional Portfolio
 
-A bilingual (English / Arabic) personal portfolio for **Azmy Ehab (عزمي إيهاب)**. The site keeps its original visual identity, projects, certificates and learning content. It is a static GitHub Pages project: no build system, framework, backend, secrets or package installation is required.
+**A bilingual (English / Arabic), dark / light, 3D-animated portfolio built with only HTML5, CSS3 and Bootstrap 5.**
 
-## Features
+![HTML5](https://img.shields.io/badge/HTML5-semantic-e34f26?logo=html5&logoColor=white)
+![CSS3](https://img.shields.io/badge/CSS3-custom%20properties%20%7C%203D%20%7C%20scroll--driven-1572b6?logo=css3&logoColor=white)
+![Bootstrap](https://img.shields.io/badge/Bootstrap-5.3.3-7952b3?logo=bootstrap&logoColor=white)
+![Custom JS](https://img.shields.io/badge/vanilla%20JavaScript-enhancement%20layer-f7df1e)
+![i18n](https://img.shields.io/badge/languages-EN%20%7C%20AR%20(RTL)-22d3ee)
+![Themes](https://img.shields.io/badge/themes-dark%20%7C%20light-8b5cf6)
 
-- Responsive layout for mobile, tablet and desktop.
-- English / Arabic content with LTR / RTL direction switching.
-- Dark / light themes, with language and theme preferences saved in the browser when storage is available.
-- Original portfolio sections: About, Skills, Projects, Certificates, Education, Learning Journey and Contact.
-- Four existing project cards and five certificate records, with original PDFs retained in the repository.
-- Local Bootstrap 5.3.3 assets; custom JavaScript enhancements are in `js/main.js`.
-- Reduced-motion support, keyboard-accessible controls, scroll reveals, an interactive hero cube and an optional canvas effect.
-- SEO metadata, Open Graph and Twitter cards, Person + WebSite JSON-LD, `robots.txt`, `sitemap.xml` and the GitHub Pages `CNAME` file.
+![Hero — English, dark theme](docs/screenshots/01-hero-en-dark.webp)
 
-## Featured projects
+</div>
 
-The four existing project cards and their destinations remain part of the portfolio:
+---
 
-| Project | Repository | Existing live URL |
+## 1. Project at a glance
+
+This portfolio presents my professional identity as an aspiring Software Developer focused on **SQL, database fundamentals and Backend Development**: my skills, four real GitHub projects, five verified-by-document certificates, education and learning journey.
+
+The assignment constraint I set for myself: **no application JavaScript at all.** Language switching, theme switching, 3D motion, count-up numbers, the scroll progress bar and every animation are pure CSS. The only script on the page is Bootstrap's own bundle, used for the responsive navbar, the certificate pop-ups and scroll-spy.
+
+| | |
+|---|---|
+| **Author** | Azmy Ehab (عزمي إيهاب) |
+| **Stack** | HTML5 · CSS3 · Bootstrap 5.3.3 (local copy) |
+| **Languages** | English (LTR) and Arabic (RTL), switchable live |
+| **Themes** | Dark (default) and Light, switchable live |
+| **Page weight** | ~139 KB of own code and images (HTML 48 KB, CSS 22 KB) + Bootstrap |
+| **Content policy** | Everything shown is real and backed by a document or repository |
+
+---
+
+## 2. Design concept
+
+The visual idea comes from my direction — **databases and backend**. The hero is a live **SQL console** that types a query describing me (`SELECT name, focus, status FROM developer WHERE target = 'Backend Development'`) and returns a result row. Around it, a **3D cube** labelled with technologies I actually studied rotates inside two orbiting rings.
+
+- **Palette:** deep navy-black surfaces with **cyan**, **purple** and **lime** accents, defined as CSS custom properties so the whole site re-themes by changing a handful of tokens.
+- **Typography:** *Bricolage Grotesque* (display/body), *IBM Plex Sans Arabic* (Arabic), *JetBrains Mono* (code). Every font has a system fallback.
+- **Honest data visualisation:** no fake progress bars. A skill gets a coloured marker only when something on the page backs it — a certificate (lime), a project (cyan) — otherwise it is marked as *studying* (purple).
+
+| Skills & evidence markers | Projects with real screenshots |
+|---|---|
+| ![Skills](docs/screenshots/02-skills.webp) | ![Projects](docs/screenshots/03-projects.webp) |
+
+| Certificates (original PDFs) | Certificate viewer (Bootstrap modal) |
+|---|---|
+| ![Certificates](docs/screenshots/04-certificates.webp) | ![Viewer](docs/screenshots/05-certificate-viewer.webp) |
+
+---
+
+## 3. Animations and 3D (all CSS)
+
+| Feature | How it is built |
+|---|---|
+| **Typing SQL console** | Three lines revealed in sequence with `clip-path` + `steps()` keyframes; the result table fades in afterwards |
+| **3D rotating cube + orbit rings** | `transform-style: preserve-3d`, six `translateZ` faces, `backface-visibility: hidden`, two rings rotating on different axes |
+| **Count-up statistics** | `@property --n` (typed integer custom property) animated with a scroll-driven timeline, rendered through `counter()` |
+| **Scroll progress bar** | `animation-timeline: scroll(root)` scales a gradient bar across the top |
+| **Scroll reveal** | `animation-timeline: view()` with `animation-range` — no observers, no scripts |
+| **Animated heading underlines** | Same `view()` timeline, `scaleX` draw-in |
+| **3D tilt on hover** | `perspective()` + `rotateX/Y` on project, certificate, skill, stat and link cards, and the portrait |
+| **Floating glow orbs, tech marquee** | Keyframe drift and an infinitely sliding track (pauses on hover) |
+| **Pulsing "Now" step** | Keyframed `box-shadow` on the learning-journey timeline |
+
+**Accessibility of motion:** a `prefers-reduced-motion` block disables every animation and transition, and the content stays fully visible without them. Where scroll-driven animation is unsupported, elements simply render in their final state.
+
+---
+
+## 4. Bilingual + theming with zero JavaScript
+
+Two visually hidden checkboxes sit at the top of `<body>`:
+
+```html
+<input class="switch-input" type="checkbox" id="langToggle">   <!-- checked = Arabic -->
+<input class="switch-input" type="checkbox" id="themeToggle">  <!-- checked = light  -->
+```
+
+Styled `<label for="…">` buttons in the navbar toggle them, and CSS reacts with the `:has()` selector:
+
+```css
+body:has(#langToggle:checked)  { direction: rtl; font-family: var(--font-ar); }
+body:has(#langToggle:checked) .en { display: none; }
+:root:has(#themeToggle:checked) { --bg: #f5f7fb; --text: #0f172a; /* …light tokens… */ }
+```
+
+Every piece of text exists twice — `<span class="en">` and `<span class="ar" lang="ar">` — so screen readers announce the correct language. Layout uses **CSS logical properties** (`inset-inline-start`, `margin-inline-start`, …), so the Arabic version mirrors correctly without a separate stylesheet. Both switches are real form controls, so they are **keyboard accessible** (Tab + Space) with a visible focus ring.
+
+| Arabic, light theme | Mobile (390 px) |
+|---|---|
+| ![Arabic light](docs/screenshots/06-hero-ar-light.webp) | <img src="docs/screenshots/07-mobile.webp" width="260" alt="Mobile view"> |
+
+---
+
+## 5. Clean, SEO-friendly code
+
+- **Semantic HTML5:** `header`, `nav`, `main`, `section` (each with `aria-labelledby`), `article`, `figure`, `dl`, `ol`, `footer`; **one `<h1>`**, logical `h2 → h3` outline.
+- **Metadata:** descriptive `<title>` and meta description, `author`, `robots`, `color-scheme`, `theme-color`, Open Graph and Twitter card tags, `og:locale` with an Arabic alternate.
+- **Structured data:** a `schema.org/Person` JSON-LD block (name in both languages, job title, skills, `sameAs` profile links). It is plain data, not executable code.
+- **Images:** every image has meaningful `alt` text, explicit `width`/`height` (no layout shift), `loading="lazy"` below the fold, `fetchpriority="high"` for the hero avatar, WebP for photos and screenshots.
+- **Links:** external links use `rel="noopener noreferrer"`; a *skip to content* link is the first focusable element.
+- **Performance:** no frameworks beyond Bootstrap, no build step, no external images, local Bootstrap copy, only Google Fonts as an external request.
+- **Maintainability:** one stylesheet organised by section with design tokens at the top; consistent BEM-style class names (`project__media`, `cert__thumb`, `step--now`); no inline styles except the numeric values of the count-up tiles.
+- **Verified:** no duplicate IDs, no broken in-page anchors, no images without `alt`, no console errors in desktop and mobile runs.
+
+---
+
+## 6. Authenticity of content
+
+The portfolio follows a strict rule: **nothing invented.**
+
+- Certificates are the original PDFs, shown unchanged, with only the details printed on them (issuer, date, code, score).
+- Each certificate has a *Verify Certificate* slot that stays hidden until the official verification link is added — no link is guessed from a code or QR image.
+- Project descriptions were written after reading each repository; limitations are stated (for example, the login in *krast-alnqwt* is client-side only).
+- No testimonials, fake statistics or proficiency percentages. The four counters (5 certificates, 4 projects, 2 C++ courses, 1 diploma) are literal counts of what is on the page.
+
+### Projects
+
+| Project | What it is | Links |
 |---|---|---|
-| DIVA-STOR | [GitHub](https://github.com/AZMYEHAB21/DIVA-STOR) | [Open site](https://azmyehab21.github.io/DIVA-STOR/) |
-| Social-media | [GitHub](https://github.com/AZMYEHAB21/Social-media) | [Open site](https://azmyehab21.github.io/Social-media/) |
-| krast-alnqwt | [GitHub](https://github.com/AZMYEHAB21/krast-alnqwt) | [Open site](https://azmyehab21.github.io/krast-alnqwt/) |
-| Athar (repository name `-`) | [GitHub](https://github.com/AZMYEHAB21/-) | [Open site](https://azmyehab21.github.io/-/) |
+| **DIVA-STOR** | Multi-page Arabic website for a clothing store | [Repo](https://github.com/AZMYEHAB21/DIVA-STOR) · [Live](https://azmyehab21.github.io/DIVA-STOR/) |
+| **Social-media** | Personal links page with glassmorphism and light 3D motion | [Repo](https://github.com/AZMYEHAB21/Social-media) · [Live](https://azmyehab21.github.io/Social-media/) |
+| **krast-alnqwt** | Arabic RTL gift-money records manager (localStorage, CSV export) | [Repo](https://github.com/AZMYEHAB21/krast-alnqwt) · [Live](https://azmyehab21.github.io/krast-alnqwt/) |
+| **Athar** | Arabic RTL Qur'an / azkar site, installable PWA | [Repo](https://github.com/AZMYEHAB21/-) · [Live](https://azmyehab21.github.io/-/) |
 
-The repository destinations were checked and resolve to existing GitHub repositories. Public availability of the four live Pages sites was not tested in this environment.
+---
 
-## Project structure
+## 7. Project structure
 
-```text
-.
-├── index.html
-├── CNAME
-├── robots.txt
-├── sitemap.xml
-├── README.md
-├── GOOGLE-SEARCH-CONSOLE-GUIDE.md
-├── PROJECT-AUDIT-REPORT.md
-├── apple-touch-icon.png
-├── favicon.ico
-├── favicon.svg
-├── favicon-48x48.png
-├── favicon-96x96.png
+```
+portfolio/
+├── index.html                  # all content, bilingual, semantic markup
+├── css/style.css               # design tokens, layout, themes, 3D + animations
 ├── assets/
-│   ├── certificates/       # original certificate images and PDFs
-│   ├── images/             # portrait image
-│   ├── projects/           # project screenshots
-│   └── vendor/             # local Bootstrap CSS and JS
-├── css/style.css
-├── js/main.js
-└── docs/screenshots/       # portfolio screenshots used in documentation
+│   ├── vendor/                 # Bootstrap 5.3.3 CSS + JS bundle (local copy)
+│   ├── certificates/           # original PDFs + JPG previews
+│   ├── projects/               # project screenshots (WebP)
+│   └── images/                 # portrait (WebP)
+├── docs/screenshots/           # images used in this README
+├── robots.txt
+└── README.md
 ```
 
-## Run locally
+---
 
-The project has no build step. From this directory, run:
+## 8. Run, edit and deploy
 
-```bash
-python -m http.server 8000
-```
+**Run locally:** open `index.html`, or `python3 -m http.server 8000` and visit `http://localhost:8000`.
 
-Then open <http://localhost:8000/>. Opening `index.html` directly may also work, but a local HTTP server is recommended because it behaves more like GitHub Pages.
+**Edit content:** change the matching `.en` and `.ar` spans in `index.html`. Colours and fonts live in the `:root` block at the top of `css/style.css`.
 
-## Deploy to the target GitHub repository
+**Add a certificate verification link:** in the certificate card, remove the comment markers around the Verify button and paste the official URL in `href`.
 
-Target repository: <https://github.com/AZMYEHAB21/Azmy-Ehab-Portfolio>
+**Deploy on GitHub Pages**
+1. Create a repository and upload the contents of this folder (`index.html` at the root).
+2. *Settings → Pages → Deploy from a branch → `main` / `(root)` → Save.*
+3. The site is live at `https://azmyehab21.github.io/<repository>/` after about a minute.
+4. Optional SEO step after publishing: add a `sitemap.xml` and a `Sitemap:` line to `robots.txt` using the real published URL.
 
-1. Create the repository under the `AZMYEHAB21` account if it does not already exist. The repository should be public for GitHub Pages on GitHub Free.
-2. Upload the **contents** of this project folder to the repository root. Do not upload the enclosing `Portfolio1-main` folder; `index.html`, `CNAME`, `robots.txt` and `sitemap.xml` must be at the repository root.
-3. Commit the files to the `main` branch.
-4. Open **Settings → Pages**.
-5. Under **Build and deployment**, choose **Deploy from a branch**, select `main`, select `/(root)`, then save.
-6. Under **Custom domain**, enter exactly `azmyehab.cc` and save. Keep the root-level `CNAME` file containing exactly `azmyehab.cc`.
-7. After DNS has propagated and GitHub has issued the TLS certificate, enable **Enforce HTTPS** in the same Pages settings area.
+**Browser support:** current Chrome, Edge, Safari and Firefox. Features that need newer engines (`:has()`, scroll-driven animation, `@property`) degrade gracefully to a static, fully readable page.
 
-The repository's default `github.io` address is only the hosting endpoint. The official public/canonical website remains **https://azmyehab.cc/**. The HTML canonical, Open Graph URL, JSON-LD URLs, `robots.txt` sitemap declaration and `sitemap.xml` all use the official domain.
+**Known limitation:** because there is no JavaScript, the language/theme choice is not remembered after a reload (defaults: English, dark).
 
-## DNS records for GitHub Pages
+---
 
-Configure these records with the DNS provider that manages `azmyehab.cc`:
+## 9. Credits
 
-| Type | Host / Name | Value |
-|---|---|---|
-| A | `@` | `185.199.108.153` |
-| A | `@` | `185.199.109.153` |
-| A | `@` | `185.199.110.153` |
-| A | `@` | `185.199.111.153` |
-| CNAME | `www` | `AZMYEHAB21.github.io` |
+Bootstrap 5 (MIT) · Google Fonts: Bricolage Grotesque, IBM Plex Sans Arabic, JetBrains Mono (SIL OFL). Certificates belong to their issuers (Route Academy, Edraak); their logos appear only inside the unmodified original documents.
 
-Do not create a CNAME at the apex (`@`) alongside the A records. Remove conflicting parking/forwarding records for the same host. Do not point `www` to the repository path; it must point directly to `AZMYEHAB21.github.io`. When both apex and `www` records are configured and the apex domain is selected in Pages, GitHub Pages can redirect the `www` variant to the apex domain.
+---
 
-Before changing DNS, compare the zone with the records currently in use so you do not accidentally remove unrelated mail or verification records. GitHub recommends verifying ownership of a custom domain in GitHub account settings before attaching it to a repository. DNS updates can take time to propagate, and HTTPS may not become available immediately.
+## 10. نبذة بالعربية
 
-Official references:
+موقع Portfolio احترافي بلغتين (إنجليزي/عربي مع دعم كامل لاتجاه RTL) ووضعين (داكن/فاتح)، مبني بـ **HTML وCSS وBootstrap فقط** دون أي JavaScript خاص بي. يضم مكعبًا ثلاثي الأبعاد وحلقات دوّارة وعدّادات متحركة وشريط تقدّم للتمرير وتأثيرات إمالة ثلاثية الأبعاد، وكلها بـ CSS. كل المحتوى حقيقي: شهادات أصلية، أربعة مشروعات فعلية بلقطات شاشة وروابط مباشرة، وبدون نسب إتقان مصطنعة.
 
-- [GitHub Pages: managing a custom domain](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site)
-- [GitHub Pages: securing your site with HTTPS](https://docs.github.com/en/pages/getting-started-with-github-pages/securing-your-github-pages-site-with-https)
+<div align="center">
 
-## Technical SEO notes
+© 2026 Azmy Ehab. All rights reserved.
 
-- Primary URL and canonical: `https://azmyehab.cc/`.
-- There is one indexable HTML page, so the sitemap intentionally contains only the homepage. The certificate PDFs and image assets are supporting files, not separate HTML pages to list in the sitemap.
-- `robots.txt` allows normal crawling and points to the sitemap.
-- No Search Console verification token has been fabricated or inserted. Google supplies a unique DNS TXT value after you add the Domain property.
-- No `noindex` directive is present.
-- The old Social-media site remains listed as a separate project/page, not as the official portfolio URL.
-
-For the DNS verification, sitemap submission, URL Inspection and indexing workflow, follow [GOOGLE-SEARCH-CONSOLE-GUIDE.md](GOOGLE-SEARCH-CONSOLE-GUIDE.md).
-
-## Content integrity
-
-The original portfolio sections, certificate images, certificate PDFs, project screenshots and project destinations are retained. Project repository links point to existing repositories under `AZMYEHAB21`. No certificate verification links, awards, testimonials, statistics or other achievements have been invented. Where an official certificate verification URL has not been supplied, the site simply does not display a verification link.
-
-## Browser and dependency notes
-
-- Bootstrap is stored locally under `assets/vendor/`.
-- Google Fonts are loaded from Google Fonts; system font fallbacks remain in the CSS if the external font service is unavailable.
-- Current evergreen Chrome, Edge, Firefox and Safari are the intended browsers.
-- The site is static and does not require Node.js, npm, a database, API keys or a server-side runtime.
-
-## نبذة بالعربية
-
-هذا هو الموقع الشخصي الرسمي لعزمي إيهاب على الدومين `https://azmyehab.cc/`. المشروع ثابت ويعمل على GitHub Pages دون إطار عمل أو خطوة Build. يحتفظ بالأقسام والمشروعات والشهادات الأصلية، ويدعم العربية والإنجليزية واتجاهي RTL/LTR والوضعين الداكن والفاتح. تم ضبط canonical وملفات `robots.txt` و`sitemap.xml` وبيانات Schema.org على الدومين الرسمي فقط.
-
-للنشر: ارفع محتويات هذا المجلد مباشرة إلى جذر مستودع `AZMYEHAB21/Azmy-Ehab-Portfolio`، ثم اختر `main / (root)` في إعدادات GitHub Pages، واضبط Custom domain على `azmyehab.cc`. بعد ذلك اتبع [دليل Google Search Console](GOOGLE-SEARCH-CONSOLE-GUIDE.md).
+</div>
